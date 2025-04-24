@@ -105,4 +105,21 @@ public class Server {
             throw new RuntimeException(e);
         }
     }
+    public void Login(String username, String password) {
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                System.out.println("Login successful. Welcome, " + username + "!");
+            }else{
+                System.out.println("Login failed. Invalid username or password.");
+            }
+
+        }catch(SQLException e){
+            System.out.println("Login error: " + e.getMessage());
+        }
+    }
 }
