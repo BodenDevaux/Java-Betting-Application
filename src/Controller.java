@@ -11,9 +11,10 @@ import java.sql.Statement;
 public class Controller {
     private Socket socket;
     private BufferedReader bufferedReader;
+    private static Server server;
 
     public Controller(){
-
+        server = new Server();
         bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
     }
@@ -34,15 +35,18 @@ public class Controller {
         System.out.println("Enter a bet:");
         bet = bufferedReader.readLine();
 
-        /*
         System.out.print("Enter Username: ");
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         String username = bufferedReader.readLine();
         System.out.print("Enter Password: ");
         String password = bufferedReader.readLine();
         System.out.println("username:"+ username + " password: "+ password);
-         */
-
+        server.addTable();
+        server.addUser(username, password);
+        System.out.print("Enter Login Username: ");
+        String loginusername = bufferedReader.readLine();
+        System.out.print("Enter Login Password: ");
+        String loginpassword = bufferedReader.readLine();
+        server.Login(loginusername, loginpassword);
         
     }
 
