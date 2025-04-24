@@ -1,17 +1,108 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Random;
 
 public class Server {
-    static Controller controller = new Controller();
+    private Connection connection;
+    public Server(){
+        int playerscore;
+        try {
+            this.connection = DBConnection.getConnection();
+            System.out.println("Connection Successful");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     public static void main(String[] args) throws IOException {
-        System.out.println("Enter Username: ");
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        String username = bufferedReader.readLine();
-        System.out.println("Enter Password: ");
-        String password = bufferedReader.readLine();
-        controller.addTable();
+        Server server = new Server();
+        ServerSocket serverSocket = new ServerSocket(5000);
+        System.out.println("server started waiting for clients...");
+
+        while(true){
+            Socket clienSocket = serverSocket.accept();
+            System.out.println("client connected: " + clienSocket.getPort());
+            String bet = server.getUserInput(clienSocket);
+            server.game(bet);
+        }
+
+    }
+
+    public String getUserInput(Socket clientSocket){
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String inputLine= reader.readLine();
+           return inputLine;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void game(String bet){
+        String[] vals = bet.split(",");
+        System.out.println("vals[1]: "+ vals[0] + "  vals[2]: " + vals[1]);
+
+        Random random = new Random();
+        double randNUM = random.nextDouble();
+        System.out.println(randNUM);
+        int flip = 0;
+
+        if(randNUM >= 0.50){
+            flip = 1;
+            //heads
+        }else{
+            flip =0;
+            //tails
+        }
+
+        int guess = Integer.parseInt(vals[1]);
+        if(guess == flip){
+            //player win
+            System.out.println("win");
+        }else{
+            //player loss
+            System.out.println("loss");
+        }
 
 
+
+    }
+
+    public void addTable(){
+
+        String cmd = "CREATE TABLE IF NOT EXISTS users(" +
+                "user_id INTEGER PRIMARY KEY," +
+                "username TEXT NOT NULL," +
+                "password TEXT NOT NULL" +
+                ");";
+
+
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(cmd);
+            System.out.println("Table Create or Alreaady exists");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void addUser(String username, String password){
+
+        String cmd = "INSERT into users (username,password) VALUES(?,?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(cmd)) {
+            preparedStatement.setString(1,username);
+            preparedStatement.setString(2,password);
+            preparedStatement.executeUpdate();
+            System.out.println("User created");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -1,33 +1,60 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Controller {
-    private Connection connection;
+    private Socket socket;
+    private BufferedReader bufferedReader;
+
     public Controller(){
+
+        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+    }
+
+    public static void main(String[] args) throws IOException {
+        Socket socket;
+
+        try {socket = new Socket("localhost",5000);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        Controller controller = new Controller();
+        System.out.print("Enter a 1 or 0(1=heads,tails=0),bet amount:");
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        String bet = bufferedReader.readLine();
+        controller.serverSend(socket,bet);
+        System.out.println("Enter a bet:");
+        bet = bufferedReader.readLine();
+
+        /*
+        System.out.print("Enter Username: ");
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        String username = bufferedReader.readLine();
+        System.out.print("Enter Password: ");
+        String password = bufferedReader.readLine();
+        System.out.println("username:"+ username + " password: "+ password);
+         */
+
+        
+    }
+
+    public void serverSend(Socket socket, String bet){
         try {
-            this.connection = DBConnection.getConnection();
-            System.out.println("Connection Successful");
-        } catch (SQLException e) {
+            PrintWriter serverIn = new PrintWriter(socket.getOutputStream(), true);
+            serverIn.println(bet);
+        }catch(IOException e){
             throw new RuntimeException(e);
         }
     }
-    public void addTable(){
-        String cmd = "CREATE TABLE IF NOT EXISTS users(" +
-                "user_id INTEGER PRIMARY KEY," +
-                "username TEXT NOT NULL" +
-                "password TEXT NOT NULL" +
-                ");";
 
 
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(cmd);
-            System.out.println("Table Create or Alreaady exists");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public void addUser(String username, String password){
 
-    }
 }
