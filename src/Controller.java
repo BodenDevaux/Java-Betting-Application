@@ -3,10 +3,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Controller {
     private Socket socket;
@@ -26,14 +22,8 @@ public class Controller {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
-        Controller controller = new Controller();
-        System.out.print("Enter a 1 or 0(1=heads,tails=0),bet amount:");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        String bet = bufferedReader.readLine();
-        controller.serverSend(socket,bet);
-        System.out.println("Enter a bet:");
-        bet = bufferedReader.readLine();
+        Controller controller = new Controller();
 
         System.out.print("Enter Username: ");
         String username = bufferedReader.readLine();
@@ -47,6 +37,15 @@ public class Controller {
         System.out.print("Enter Login Password: ");
         String loginpassword = bufferedReader.readLine();
         server.Login(loginusername, loginpassword);
+
+        System.out.print("Enter a 1 or 0(1=heads,tails=0),bet amount:");
+        String bet = bufferedReader.readLine();
+        controller.serverSend(socket,bet);
+        BufferedReader out = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        String result = out.readLine();
+        System.out.println("Game Result: " + result);
+        //System.out.println("Enter a bet:");
+        //bet = bufferedReader.readLine();
         
     }
 

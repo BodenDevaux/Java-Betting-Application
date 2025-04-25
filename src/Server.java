@@ -1,12 +1,10 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Random;
 
 public class Server {
@@ -27,10 +25,12 @@ public class Server {
         System.out.println("server started waiting for clients...");
 
         while(true){
-            Socket clienSocket = serverSocket.accept();
-            System.out.println("client connected: " + clienSocket.getPort());
-            String bet = server.getUserInput(clienSocket);
-            server.game(bet);
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("client connected: " + clientSocket.getPort());
+            String bet = server.getUserInput(clientSocket);
+            String result = server.game(bet);
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            out.println(result);
         }
 
     }
@@ -45,7 +45,7 @@ public class Server {
         }
     }
 
-    public void game(String bet){
+    public String game(String bet){
         String[] vals = bet.split(",");
         System.out.println("vals[1]: "+ vals[0] + "  vals[2]: " + vals[1]);
 
@@ -66,13 +66,15 @@ public class Server {
         if(guess == flip){
             //player win
             System.out.println("win");
+            return "You win!";
         }else{
             //player loss
             System.out.println("loss");
+            return "You lose!";
         }
 
 
-
+        //return bet;
     }
 
     public void addTable(){
@@ -113,13 +115,14 @@ public class Server {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                System.out.println("Login successful. Welcome, " + username + "!");
+                System.out.println("Login successful");
             }else{
-                System.out.println("Login failed. Invalid username or password.");
+                System.out.println("Login failed, invalid user or password");
             }
 
         }catch(SQLException e){
-            System.out.println("Login error: " + e.getMessage());
+            System.out.println("Login error");
         }
     }
+
 }
