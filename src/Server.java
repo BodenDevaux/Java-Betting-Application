@@ -9,8 +9,8 @@ import java.util.Random;
 
 public class Server {
     private Connection connection;
+    public int score = 0;
     public Server(){
-        int playerscore;
         try {
             this.connection = DBConnection.getConnection();
             System.out.println("Connection Successful");
@@ -66,15 +66,36 @@ public class Server {
         if(guess == flip){
             //player win
             System.out.println("win");
+            score += Integer.parseInt(vals[1]);
+            updateScore(score);
             return "You win!";
         }else{
             //player loss
             System.out.println("loss");
+            score -= Integer.parseInt(vals[1]);
+            updateScore(score);
             return "You lose!";
         }
 
 
         //return bet;
+    }
+
+    public void updateScore(int score){
+        String cmd = "CREATE TABLE IF NOT EXISTS scores(" +
+                "score_id INTEGER PRIMARY KEY," +
+                "user_id INTEGER," +
+                "username TEXT NOT NULL," +
+                "score INTEGER," +
+                "FOREIGN KEY(user_id) REFERENCES users(user_id)" +
+                ");";
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(cmd);
+            //System.out.println("Score table created or already exists");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void addTable(){
@@ -88,7 +109,7 @@ public class Server {
 
         try (Statement statement = connection.createStatement()) {
             statement.execute(cmd);
-            System.out.println("Table Create or Alreaady exists");
+            System.out.println("Table Create or Already exists");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
