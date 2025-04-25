@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Server {
     private Connection connection;
-    public int score = 0;
+    public int score = 100;
     public Server(){
         try {
             this.connection = DBConnection.getConnection();
@@ -91,7 +91,7 @@ public class Server {
                 ");";
         try (Statement statement = connection.createStatement()) {
             statement.execute(cmd);
-            //System.out.println("Score table created or already exists");
+            System.out.println(score);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
