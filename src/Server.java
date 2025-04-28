@@ -10,6 +10,8 @@ import java.util.Random;
 public class Server {
     private Connection connection;
     public int score = 100;
+    private String loggedinUser;
+    private int loggedinID;
     public Server(){
         try {
             this.connection = DBConnection.getConnection();
@@ -67,12 +69,14 @@ public class Server {
             //player win
             System.out.println("win");
             score += Integer.parseInt(vals[1]);
+            createScore(score);
             updateScore(score);
             return "You win!";
         }else{
             //player loss
             System.out.println("loss");
             score -= Integer.parseInt(vals[1]);
+            createScore(score);
             updateScore(score);
             return "You lose!";
         }
@@ -81,7 +85,7 @@ public class Server {
         //return bet;
     }
 
-    public void updateScore(int score){
+    public void createScore(int score){
         String cmd = "CREATE TABLE IF NOT EXISTS scores(" +
                 "score_id INTEGER PRIMARY KEY," +
                 "user_id INTEGER," +
@@ -96,6 +100,31 @@ public class Server {
             throw new RuntimeException(e);
         }
 
+    }
+    public void updateScore(int score){
+        String cmd = "SELECT * FROM scores WHERE user_id = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(cmd);
+            preparedStatement.setInt(1, loggedinID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                String update = "UPDATE scores SET score = ? WHERE user_id = ?";
+                PreparedStatement preparedStatement1 = connection.prepareStatement(update);
+                preparedStatement1.setInt(1, score);
+                preparedStatement1.setInt(2, loggedinID);
+                preparedStatement1.executeUpdate();
+            }else{
+                String add = "INSERT INTO scores (user_id, username, score) VALUES (?, ?, ?)";
+                PreparedStatement preparedStatement1 = connection.prepareStatement(add);
+                preparedStatement1.setInt(1, loggedinID);
+                preparedStatement1.setString(2, loggedinUser);
+                preparedStatement1.setInt(3, score);
+                preparedStatement1.executeUpdate();
+                
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void addTable(){
@@ -136,7 +165,9 @@ public class Server {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                System.out.println("Login successful");
+                loggedinUser = resultSet.getString("username");
+                loggedinID = resultSet.getInt("user_id");
+                System.out.println("Login successful for " + loggedinUser + " id - " + loggedinID);
             }else{
                 System.out.println("Login failed, invalid user or password");
             }
