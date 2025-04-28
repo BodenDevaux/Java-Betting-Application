@@ -1,3 +1,5 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -5,51 +7,49 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Controller {
+
     private Socket socket;
-    private BufferedReader bufferedReader;
-    private static Server server;
+    private View view = new View();
+    private BufferedReader reader;
 
-    public Controller(){
-        server = new Server();
-        bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-
-    }
-
-    public static void main(String[] args) throws IOException {
-        Socket socket;
+    public Controller(View view){
 
         try {socket = new Socket("localhost",5000);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        Controller controller = new Controller();
+        try {
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
 
-        System.out.print("Enter Username: ");
-        String username = bufferedReader.readLine();
-        System.out.print("Enter Password: ");
-        String password = bufferedReader.readLine();
-        System.out.println("username:"+ username + " password: "+ password);
-        server.addTable();
-        server.addUser(username, password);
-        System.out.print("Enter Login Username: ");
-        String loginusername = bufferedReader.readLine();
-        System.out.print("Enter Login Password: ");
-        String loginpassword = bufferedReader.readLine();
-        server.Login(loginusername, loginpassword);
-
-        System.out.print("Enter a 1 or 0(1=heads,tails=0),bet amount:");
-        String bet = bufferedReader.readLine();
-        controller.serverSend(socket,bet);
-        BufferedReader out = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        String result = out.readLine();
-        System.out.println("Game Result: " + result);
-        //System.out.println("Enter a bet:");
-        //bet = bufferedReader.readLine();
-        
+        this.view = view;
+        view.loginButtonActionListener(new ActionListenerLoginButton());
+        view.setCreateAccountPageButton(new ActionListenerCreateAccountPage());
+        view.createAccountActionListener(new ActionListenerCreateAccountButton());
+        view.initializeLoginScreen();
     }
 
-    public void serverSend(Socket socket, String bet){
+    public static void main(String[] args) throws IOException {
+        Socket socket;
+        View view = new View();
+        Controller controller = new Controller(view);
+        String ans;
+        try{
+            ans = controller.reader.readLine();
+            System.out.println(ans);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+        if(ans.equals("success")){
+            controller.initializeGame();
+        }
+
+
+    }
+
+    public void serverSend(String bet){
         try {
             PrintWriter serverIn = new PrintWriter(socket.getOutputStream(), true);
             serverIn.println(bet);
@@ -58,6 +58,36 @@ public class Controller {
         }
     }
 
+    private class ActionListenerLoginButton implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String info = view.getUserInformation();
+            serverSend(info);
+
+        }
+    }
+
+    private class ActionListenerCreateAccountPage implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.closeLoginScreen();
+            view.initializeCreateScreen();
+        }
+    }
 
 
+    private class ActionListenerCreateAccountButton implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String info = view.getUserInformation();
+            serverSend(info);
+        }
+    }
+
+    public void initializeGame(){
+        view.initializeGameScreen();
+    }
 }

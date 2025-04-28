@@ -27,10 +27,14 @@ public class Server {
         while(true){
             Socket clientSocket = serverSocket.accept();
             System.out.println("client connected: " + clientSocket.getPort());
-            String bet = server.getUserInput(clientSocket);
-            String result = server.game(bet);
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-            out.println(result);
+            String userInfo= server.getUserInput(clientSocket);
+            String[]info = userInfo.split(",");
+            boolean ans = server.Login(info[0],info[1]);
+            if(ans){
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                out.println("success");
+            }
+
         }
 
     }
@@ -128,7 +132,7 @@ public class Server {
             throw new RuntimeException(e);
         }
     }
-    public void Login(String username, String password) {
+    public boolean Login(String username, String password) {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -137,13 +141,16 @@ public class Server {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
                 System.out.println("Login successful");
+                return true;
             }else{
                 System.out.println("Login failed, invalid user or password");
+                return false;
             }
 
         }catch(SQLException e){
             System.out.println("Login error");
         }
+        return false;
     }
 
 }
