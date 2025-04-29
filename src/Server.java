@@ -36,6 +36,14 @@ public class Server {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 out.println("success");
             }
+            String bet;
+            try{
+                BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                bet = reader.readLine();
+                System.out.println(bet);
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
 
         }
 

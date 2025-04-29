@@ -55,4 +55,12 @@ public class View {
         gameScreen.initializeGameScreen();
     }
 
+    public void betButtonActionListen(ActionListener actionListener){
+        gameScreen.betButtonActionListener(actionListener);
+    }
+
+    public String getUsrBet(){
+        return gameScreen.getUserBet();
+    }
+
 }

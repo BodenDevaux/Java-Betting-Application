@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class GameScreen {
     private JFrame gameScreen;
@@ -14,7 +15,7 @@ public class GameScreen {
         betArea = new JTextField("enter bet here");
         result = new JTextArea();
         playscore = new JTextArea();
-        betButton = new JButton();
+        betButton = new JButton("place bet");
     }
 
     public void initializeGameScreen(){
@@ -25,5 +26,13 @@ public class GameScreen {
         gameScreen.add(result);
         gameScreen.add(betArea);
         gameScreen.add(betButton);
+    }
+
+    public void betButtonActionListener(ActionListener actionListener){
+        betButton.addActionListener(actionListener);
+    }
+
+    public String getUserBet(){
+        return betArea.getText();
     }
 }

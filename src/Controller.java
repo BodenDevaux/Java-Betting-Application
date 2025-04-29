@@ -28,6 +28,7 @@ public class Controller {
         view.loginButtonActionListener(new ActionListenerLoginButton());
         view.setCreateAccountPageButton(new ActionListenerCreateAccountPage());
         view.createAccountActionListener(new ActionListenerCreateAccountButton());
+        view.betButtonActionListen((new ActionListenerBetButton()));
         view.initializeLoginScreen();
     }
 
@@ -45,6 +46,7 @@ public class Controller {
         if(ans.equals("success")){
             controller.initializeGame();
         }
+
 
 
     }
@@ -84,6 +86,15 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             String info = view.getUserInformation();
             serverSend(info);
+        }
+    }
+
+    private class ActionListenerBetButton implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String bet = view.getUsrBet();
+            serverSend(bet);
         }
     }
 
