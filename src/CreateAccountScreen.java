@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 public class CreateAccountScreen {
     private JFrame createAccountScreen;
 
-    private JTextField usernameField;
-    private JTextField passwordField;
+    private static JTextField usernameField;
+    private static JTextField passwordField;
 
     private JButton createAccountButton;
 
@@ -30,7 +30,7 @@ public class CreateAccountScreen {
         createAccountScreen.add(createAccountButton);
     }
 
-    public String newUserInfo (){
+    public static String newUserInfo(){
         String username = usernameField.getText();
         String password = passwordField.getText();
         return username + "," + password;

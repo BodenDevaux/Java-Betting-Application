@@ -24,6 +24,9 @@ public class View {
     public void createAccountActionListener(ActionListener actionListener){
         createAccountScreen.createAccountButtonActionListener(actionListener);
     }
+    public String createUserInformation(){
+        return CreateAccountScreen.newUserInfo();
+    }
 
     /// ///////////////////////////////////////
     //login screen

@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Controller {
-
+    private Model model = new Model();
     private Socket socket;
     private View view = new View();
     private BufferedReader reader;
@@ -84,7 +84,8 @@ public class Controller {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String info = view.getUserInformation();
+            String info = view.createUserInformation();
+            model.addUser(info);
             serverSend(info);
         }
     }
