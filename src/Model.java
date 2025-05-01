@@ -57,7 +57,7 @@ public class Model {
                 ");";
         try (Statement statement = connection.createStatement()) {
             statement.execute(cmd);
-            System.out.println(score);
+            System.out.println("Score: " + score);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

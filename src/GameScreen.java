@@ -19,14 +19,14 @@ public class GameScreen {
         betArea = new JTextField("enter bet here");
         result = new JTextArea();
         playscore = new JTextArea();
-        betButton = new JButton("place bet");
 
-        //single radio button
         headsButton = new JRadioButton("Heads");
         tailsButton = new JRadioButton("Tails");
         guessGroup = new ButtonGroup();
         guessGroup.add(headsButton);
         guessGroup.add(tailsButton);
+
+        betButton = new JButton("place bet");
     }
 
     public void initializeGameScreen(){
@@ -35,7 +35,7 @@ public class GameScreen {
         gameScreen.add(playscore);
         gameScreen.add(result);
         gameScreen.add(betArea);
-        gameScreen.add(betButton);
+
 
         //add radio
         JPanel guessPanel = new JPanel();
@@ -43,6 +43,7 @@ public class GameScreen {
         guessPanel.add(headsButton);
         guessPanel.add(tailsButton);
         gameScreen.add(guessPanel);
+        gameScreen.add(betButton);
         gameScreen.setVisible(true);
     }
 
