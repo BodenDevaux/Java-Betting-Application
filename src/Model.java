@@ -88,7 +88,10 @@ public class Model {
             throw new RuntimeException(e);
         }
     }
-    public boolean Login(String username, String password) {
+    public boolean Login(String info) {
+        String[] userinfo = info.split(",");
+        String username = userinfo[0];
+        String password = userinfo[1];
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

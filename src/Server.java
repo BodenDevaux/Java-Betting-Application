@@ -21,7 +21,6 @@ public class Server {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     public static void main(String[] args) throws IOException {
@@ -34,7 +33,7 @@ public class Server {
             System.out.println("client connected: " + clientSocket.getPort());
             String userInfo = server.getUserInput(clientSocket);
             String[] info = userInfo.split(",");
-            boolean ans = model.Login(info[0], info[1]);
+            boolean ans = model.Login(userInfo);
             if (ans) {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 out.println("success");

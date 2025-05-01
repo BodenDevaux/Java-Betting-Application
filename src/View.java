@@ -65,5 +65,11 @@ public class View {
     public String getUsrBet(){
         return gameScreen.getUserBet();
     }
+    public void setGameResult(String result) {
+        gameScreen.getGameResult(result);
+    }
+    public void setScore(String score){
+        gameScreen.setScore(score);
+    }
 
 }

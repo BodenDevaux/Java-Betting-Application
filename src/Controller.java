@@ -9,6 +9,7 @@ import java.net.Socket;
 public class Controller {
     private Model model = new Model();
     private Socket socket;
+    private Game game;
     private View view = new View();
     private BufferedReader reader;
 
@@ -28,6 +29,7 @@ public class Controller {
         view.loginButtonActionListener(new ActionListenerLoginButton());
         view.setCreateAccountPageButton(new ActionListenerCreateAccountPage());
         view.createAccountActionListener(new ActionListenerCreateAccountButton());
+        System.out.println("Hello from debug2");
         view.betButtonActionListen((new ActionListenerBetButton()));
         view.initializeLoginScreen();
     }
@@ -65,6 +67,7 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             String info = view.getUserInformation();
+            model.Login(info);
             serverSend(info);
 
         }
@@ -95,11 +98,13 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             String bet = view.getUsrBet();
+            game.game(bet);
             serverSend(bet);
         }
     }
 
     public void initializeGame(){
+        game = new Game();
         view.initializeGameScreen();
     }
 }
