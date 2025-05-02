@@ -75,9 +75,12 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             String info = view.getUserInformation();
-            model.Login(info);
-            serverSend(info);
-
+            boolean check = model.Login(info);
+            if(check){
+                serverSend(info);
+            }else{
+                System.out.println("fail");
+            }
         }
     }
 
