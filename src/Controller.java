@@ -9,9 +9,8 @@ import java.net.Socket;
 public class Controller {
     private Model model = new Model();
     private Socket socket;
-    private Game game;
     private View view = new View();
-    private BufferedReader reader;
+    public BufferedReader reader;
 
     public Controller(View view){
 
@@ -34,24 +33,6 @@ public class Controller {
         view.initializeLoginScreen();
     }
 
-    public static void main(String[] args) throws IOException {
-        Socket socket;
-        View view = new View();
-        Controller controller = new Controller(view);
-        String ans;
-        try{
-            ans = controller.reader.readLine();
-            System.out.println(ans);
-        }catch (IOException e){
-            throw new RuntimeException(e);
-        }
-        if(ans.equals("success")){
-            controller.initializeGame();
-        }
-
-
-
-    }
 
     public void serverSend(String bet){
         try {
@@ -61,6 +42,33 @@ public class Controller {
             throw new RuntimeException(e);
         }
     }
+
+    public String serverRecieve(){
+        try {
+            String result = reader.readLine();
+            return result;
+        }catch(IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void processResult(String result){
+        String [] res = result.split(",");
+        System.out.println("res[0]"+res[0]+"  res[1]:"+res[1]);
+
+        String screenResult;
+        if(res[0].equals("win")){
+            screenResult = "win";
+            System.out.println("win");
+        }else{
+            System.out.println("loss");
+            screenResult = "=loss";
+        }
+        view.setGameResult(screenResult);
+        view.setScore(res[2]);
+
+    }
+
 
     private class ActionListenerLoginButton implements ActionListener {
 
@@ -98,13 +106,14 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             String bet = view.getUsrBet();
-            game.game(bet);
             serverSend(bet);
+            String s = serverRecieve();
+            System.out.println(s);
+            processResult(s);
         }
     }
 
     public void initializeGame(){
-        game = new Game();
         view.initializeGameScreen();
     }
 }

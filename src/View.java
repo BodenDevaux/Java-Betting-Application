@@ -68,6 +68,7 @@ public class View {
     public void setGameResult(String result) {
         gameScreen.getGameResult(result);
     }
+
     public void setScore(String score){
         gameScreen.setScore(score);
     }

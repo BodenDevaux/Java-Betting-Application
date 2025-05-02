@@ -13,6 +13,17 @@ public class GameScreen {
     private JRadioButton headsButton;
     private JRadioButton tailsButton;
     private ButtonGroup guessGroup;
+    private ButtonGroup diceGuesGroup;
+
+    private JRadioButton buttonOne;
+    private JRadioButton buttonTwo;
+    private JRadioButton buttonThree;
+    private JRadioButton buttonFour;
+    private JRadioButton buttonFive;
+    private JRadioButton buttonSix;
+
+
+
 
     public GameScreen(){
         gameScreen = new JFrame();
@@ -22,9 +33,24 @@ public class GameScreen {
 
         headsButton = new JRadioButton("Heads");
         tailsButton = new JRadioButton("Tails");
+
         guessGroup = new ButtonGroup();
         guessGroup.add(headsButton);
         guessGroup.add(tailsButton);
+
+        diceGuesGroup = new ButtonGroup();
+        buttonOne = new JRadioButton("1");
+        buttonTwo = new JRadioButton("2");
+        buttonThree = new JRadioButton("3");
+        buttonFour = new JRadioButton("4");
+        buttonFive = new JRadioButton("5");
+        buttonSix = new JRadioButton("6");
+        diceGuesGroup.add(buttonOne);
+        diceGuesGroup.add(buttonTwo);
+        diceGuesGroup.add(buttonThree);
+        diceGuesGroup.add(buttonFour);
+        diceGuesGroup.add(buttonFive);
+        diceGuesGroup.add(buttonSix);
 
         betButton = new JButton("place bet");
     }

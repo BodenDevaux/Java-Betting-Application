@@ -10,6 +10,7 @@ import java.util.Random;
 public class Server {
     private Connection connection;
     private static Model model = new Model();
+    private static Game game = new Game();
     public int score = 100;
     private String loggedinUser;
     private int loggedinID;
@@ -38,14 +39,18 @@ public class Server {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 out.println("success");
             }
-            String bet;
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                bet = reader.readLine();
-                System.out.println(bet);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            while(true){
+                String bet;
+                try {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    bet = reader.readLine();
+                    String result = game.coinBet(bet);
+                    server.sendUserResult(clientSocket,result);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
+
 
         }
 
@@ -61,42 +66,13 @@ public class Server {
         }
     }
 
-    public String game(String bet) {
-        String[] vals = bet.split(",");
-        System.out.println("vals[1]: " + vals[0] + "  vals[2]: " + vals[1]);
-
-        Random random = new Random();
-        double randNUM = random.nextDouble();
-        System.out.println(randNUM);
-        int flip = 0;
-
-        if (randNUM >= 0.50) {
-            flip = 1;
-            //heads
-        } else {
-            flip = 0;
-            //tails
+    public void sendUserResult(Socket clientSocket,String result) {
+        try {
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            out.println(result);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        int guess = Integer.parseInt(vals[1]);
-        if (guess == flip) {
-            //player win
-            System.out.println("win");
-            score += Integer.parseInt(vals[1]);
-            model.createScore(score);
-            model.updateScore(score);
-            return "You win!";
-        } else {
-            //player loss
-            System.out.println("loss");
-            score -= Integer.parseInt(vals[1]);
-            model.createScore(score);
-            model.updateScore(score);
-            return "You lose!";
-        }
-
-
-        //return bet;
     }
-}
 
+}
