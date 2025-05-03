@@ -61,9 +61,12 @@ public class View {
     public void betButtonActionListen(ActionListener actionListener){
         gameScreen.betButtonActionListener(actionListener);
     }
+    public String getUsrDiceBet(){
+        return gameScreen.getUserDiceBet();
+    }
 
-    public String getUsrBet(){
-        return gameScreen.getUserBet();
+    public String getUsrCoinBet(){
+        return gameScreen.getUserCoinBet();
     }
     public void setGameResult(String result) {
         gameScreen.getGameResult(result);
@@ -73,4 +76,14 @@ public class View {
         gameScreen.setScore(score);
     }
 
+    public void diceGameButtonActionListener(ActionListener actionListener){gameScreen.diceGameButtonActionListener(actionListener);}
+    public void coinGameButtonActionListener(ActionListener actionListener){gameScreen.coinGameButtonActionListener(actionListener);}
+
+    public void showCoinGame(){
+        gameScreen.displayCoinGame();
+    }
+
+    public void showDiceGame(){
+        gameScreen.displayDiceGame();
+    }
 }

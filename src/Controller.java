@@ -10,16 +10,14 @@ public class Controller {
     private Socket socket;
     private View view = new View();
     public BufferedReader reader;
+    private String gameType ="";
 
     public Controller(View view){
 
-        try {socket = new Socket("localhost",5000);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
         try {
+            socket = new Socket("localhost",5000);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        }catch(IOException e){
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -28,6 +26,8 @@ public class Controller {
         view.setCreateAccountPageButton(new ActionListenerCreateAccountPage());
         view.createAccountActionListener(new ActionListenerCreateAccountButton());
         view.betButtonActionListen((new ActionListenerBetButton()));
+        view.coinGameButtonActionListener(new ActionListenerCoinGameButton());
+        view.diceGameButtonActionListener(new ActionListenerDiceGameButton());
         view.initializeLoginScreen();
     }
 
@@ -43,8 +43,7 @@ public class Controller {
 
     public String serverRecieve(){
         try {
-            String result = reader.readLine();
-            return result;
+            return reader.readLine();
         }catch(IOException e){
             throw new RuntimeException(e);
         }
@@ -74,6 +73,7 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             String info = view.getUserInformation();
             serverSend(info);
+
             String response = serverRecieve();
             if(response.equals("success")){
                 view.initializeGameScreen();
@@ -106,12 +106,43 @@ public class Controller {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String bet = view.getUsrBet();
-            serverSend(bet);
-            String s = serverRecieve();
-            System.out.println(s);
-            processResult(s);
+            if(gameType.equals("coin")){
+                String bet = view.getUsrCoinBet();
+                String final_bet = gameType + "," + bet;
+                serverSend(final_bet);
+                String results = serverRecieve();
+                System.out.println(results);
+                processResult(results);
+            }
+            else if(gameType.equals("dice")){
+                String bet = view.getUsrDiceBet();
+                String final_bet = gameType + "," + bet;
+                serverSend(final_bet);
+                String results = serverRecieve();
+                System.out.println(results);
+                processResult(results);
+            }else{
+                System.out.println("no game type shouldn't happen");
+            }
+
         }
     }
 
+    private class ActionListenerDiceGameButton implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.showDiceGame();
+            gameType = "dice";
+        }
+    }
+
+    private class ActionListenerCoinGameButton implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.showCoinGame();
+            gameType ="coin";
+        }
+    }
 }

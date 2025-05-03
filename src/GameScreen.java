@@ -12,8 +12,9 @@ public class GameScreen {
 
     private JRadioButton headsButton;
     private JRadioButton tailsButton;
-    private ButtonGroup guessGroup;
+    private ButtonGroup coinGuessGroup;
     private ButtonGroup diceGuesGroup;
+    private ButtonGroup gameSelectionGroup;
 
     private JRadioButton buttonOne;
     private JRadioButton buttonTwo;
@@ -22,7 +23,12 @@ public class GameScreen {
     private JRadioButton buttonFive;
     private JRadioButton buttonSix;
 
+    private JPanel coinPanel;
+    private  JPanel dicePanel;
+    private JPanel gameSelectionPanel;
 
+    private JRadioButton diceGameButton;
+    private JRadioButton coinGameButton;
 
 
     public GameScreen(){
@@ -31,12 +37,19 @@ public class GameScreen {
         result = new JTextArea();
         playscore = new JTextArea();
 
+        diceGameButton = new JRadioButton();
+        coinGameButton = new JRadioButton();
+        gameSelectionGroup = new ButtonGroup();
+        gameSelectionGroup.add(diceGameButton);
+        gameSelectionGroup.add(coinGameButton);
+
         headsButton = new JRadioButton("Heads");
         tailsButton = new JRadioButton("Tails");
 
-        guessGroup = new ButtonGroup();
-        guessGroup.add(headsButton);
-        guessGroup.add(tailsButton);
+        coinGuessGroup = new ButtonGroup();
+        coinGuessGroup.add(headsButton);
+        coinGuessGroup.add(tailsButton);
+
 
         diceGuesGroup = new ButtonGroup();
         buttonOne = new JRadioButton("1");
@@ -57,18 +70,38 @@ public class GameScreen {
 
     public void initializeGameScreen(){
         gameScreen.setSize(500,500);
-        gameScreen.setLayout(new GridLayout(5,1,2,2));
+        gameScreen.setLayout(new GridLayout(7,1,2,2));
         gameScreen.add(playscore);
         gameScreen.add(result);
         gameScreen.add(betArea);
 
+        gameSelectionPanel = new JPanel();
+        gameSelectionPanel.add(new JLabel("choose game type"));
+        gameSelectionPanel.add(diceGameButton);
+        gameSelectionPanel.add(coinGameButton);
+        gameSelectionPanel.setVisible(true);
 
         //add radio
-        JPanel guessPanel = new JPanel();
-        guessPanel.add(new JLabel("Choose Heads or Tails:"));
-        guessPanel.add(headsButton);
-        guessPanel.add(tailsButton);
-        gameScreen.add(guessPanel);
+        coinPanel = new JPanel();
+        coinPanel.add(new JLabel("Choose Heads or Tails:"));
+        coinPanel.add(headsButton);
+        coinPanel.add(tailsButton);
+        coinPanel.setVisible(false);
+
+
+
+        dicePanel = new JPanel();
+        dicePanel.add(new JLabel("choose 1-6 dice roll"));
+        dicePanel.add(buttonOne);
+        dicePanel.add(buttonTwo);
+        dicePanel.add(buttonThree);
+        dicePanel.add(buttonFour);
+        dicePanel.add(buttonFive);
+        dicePanel.add(buttonSix);
+
+        gameScreen.add(gameSelectionPanel);
+        gameScreen.add(dicePanel);
+        gameScreen.add(coinPanel);
         gameScreen.add(betButton);
         gameScreen.setVisible(true);
     }
@@ -77,12 +110,15 @@ public class GameScreen {
         betButton.addActionListener(actionListener);
     }
 
-    public String getUserBet(){
+    public void diceGameButtonActionListener(ActionListener actionListener){diceGameButton.addActionListener(actionListener);}
+    public void coinGameButtonActionListener(ActionListener actionListener){coinGameButton.addActionListener(actionListener);}
+
+    public String getUserCoinBet(){
         String guess = "";
         if(headsButton.isSelected()){
-            guess = "1";
+            guess = "heads";
         }else if(tailsButton.isSelected()){
-            guess = "2";
+            guess = "tails";
         }else{
             return "Please Enter A Valid Guess";
         }
@@ -90,6 +126,36 @@ public class GameScreen {
         return guess + "," + betAmount;
     }
 
+    public String getUserDiceBet(){
+        String guess = "";
+        if(buttonOne.isSelected()){
+            guess = "1";
+        }else if(buttonTwo.isSelected()){
+            guess = "2";
+        }else if(buttonThree.isSelected()){
+            guess = "3";
+        }else if(buttonFour.isSelected()){
+            guess = "4";
+        }else if(buttonFive.isSelected()){
+            guess = "5";
+        }else if(buttonSix.isSelected()){
+            guess = "6";
+        }else{
+            return "Please Enter A Valid Guess";
+        }
+        String betAmount = betArea.getText();
+        return guess + "," + betAmount;
+    }
+
+    public void displayCoinGame(){
+        coinPanel.setVisible(true);
+        dicePanel.setVisible(false);
+    }
+
+    public void displayDiceGame(){
+        dicePanel.setVisible(true);
+        coinPanel.setVisible(false);
+    }
     public void getGameResult(String resultText){
         result.setText(resultText);
     }

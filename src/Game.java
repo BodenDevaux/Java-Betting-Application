@@ -10,22 +10,19 @@ public class Game {
         Random random = new Random();
         double randNUM = random.nextDouble();
 
-        int flip = 0;
         String flipResult;
         if (randNUM >= 0.50) {
-            flip = 1;
             flipResult = "heads";
         } else {
-            flip = 0;
             flipResult ="tails";
         }
 
         String scoreText;
         String playerResult;
-        int guess = Integer.parseInt(vals[0]);
-        if (guess == flip) {
+        String guess =vals[1];
+        if (guess.equals(flipResult)) {
             //player win
-            score += Integer.parseInt(vals[1]);
+            score += Integer.parseInt(vals[2]);
             model.createScore(score);
             model.updateScore(score);
             scoreText = String.valueOf(score);
@@ -33,14 +30,14 @@ public class Game {
         } else {
             //player loss
 
-            score -= Integer.parseInt(vals[1]);
+            score -= Integer.parseInt(vals[2]);
             model.createScore(score);
             model.updateScore(score);
             scoreText = String.valueOf(score);
             playerResult = "loss";
         }
 
-
+        System.out.println("in coin game");
         return playerResult + "," + flipResult + "," + scoreText;
     }
 
@@ -52,27 +49,29 @@ public class Game {
         String scoreText;
 
         Random random = new Random();
-        int randNUM = random.nextInt(7);
-
+        int randNUM = random.nextInt(6)+1;
+        System.out.println("randnum is: "+ randNUM);
         if(randNUM == 1){dieResult ="1";  }
         else if(randNUM == 2){dieResult ="2";   }
         else if (randNUM ==3){dieResult ="3"; }
         else if(randNUM == 4){dieResult ="4"; }
         else if(randNUM == 5){dieResult ="5"; }
         else{dieResult ="6"; }
-        int playerGuess = Integer.parseInt(vals[0]);
+        String playerGuess = vals[1];
+        int betAmount = Integer.parseInt(vals[2]);
 
-        if(playerGuess == randNUM){
+        if(playerGuess.equals(dieResult)){
             //win
-            score += playerGuess;
+            score += betAmount;
             scoreText = String.valueOf(score);
             playerResult = "win";
         }else{
-            score -= playerGuess;
+            //loss
+            score -= betAmount;
             scoreText = String.valueOf(score);
             playerResult = "loss";
         }
-
+        System.out.println("in dice game");
         return playerResult + "," + dieResult + "," + scoreText;
     }
 }

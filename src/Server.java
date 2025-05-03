@@ -29,6 +29,7 @@ public class Server {
         while (true) {
             Socket clientSocket = serverSocket.accept();
             System.out.println("client connected: " + clientSocket.getPort());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String userInfo = server.getUserInput(clientSocket);
             boolean ans = model.Login(userInfo);
             while(true){
@@ -45,10 +46,18 @@ public class Server {
 
                 String bet;
                 try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
                     bet = reader.readLine();
-                    String result = game.coinBet(bet);
-                    server.sendUserResult(clientSocket,result);
+                    String []info = bet.split(",");
+                    String result;
+                    if(info[0].equals("dice")){
+                        result = game.diceBet(bet);
+                        server.sendUserResult(clientSocket,result);
+                    }else if(info[0].equals("coin")){
+                        result = game.coinBet(bet);
+                        server.sendUserResult(clientSocket,result);
+                    }
+
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
