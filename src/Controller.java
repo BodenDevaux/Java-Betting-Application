@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Controller {
-    private Model model = new Model();
     private Socket socket;
     private View view = new View();
     public BufferedReader reader;
@@ -28,7 +27,6 @@ public class Controller {
         view.loginButtonActionListener(new ActionListenerLoginButton());
         view.setCreateAccountPageButton(new ActionListenerCreateAccountPage());
         view.createAccountActionListener(new ActionListenerCreateAccountButton());
-        System.out.println("Hello from debug2");
         view.betButtonActionListen((new ActionListenerBetButton()));
         view.initializeLoginScreen();
     }
@@ -62,7 +60,7 @@ public class Controller {
             System.out.println("win");
         }else{
             System.out.println("loss");
-            screenResult = "=loss";
+            screenResult = "loss";
         }
         view.setGameResult(screenResult);
         view.setScore(res[2]);
@@ -75,11 +73,12 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             String info = view.getUserInformation();
-            boolean check = model.Login(info);
-            if(check){
-                serverSend(info);
+            serverSend(info);
+            String response = serverRecieve();
+            if(response.equals("success")){
+                view.initializeGameScreen();
             }else{
-                System.out.println("fail");
+                System.out.println("it browken");
             }
         }
     }
@@ -99,7 +98,6 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             String info = view.createUserInformation();
-            model.addUser(info);
             serverSend(info);
         }
     }
@@ -116,7 +114,4 @@ public class Controller {
         }
     }
 
-    public void initializeGame(){
-        view.initializeGameScreen();
-    }
 }

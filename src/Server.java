@@ -11,9 +11,6 @@ public class Server {
     private Connection connection;
     private static Model model = new Model();
     private static Game game = new Game();
-    public int score = 100;
-    private String loggedinUser;
-    private int loggedinID;
 
     public Server() {
         try {
@@ -33,13 +30,19 @@ public class Server {
             Socket clientSocket = serverSocket.accept();
             System.out.println("client connected: " + clientSocket.getPort());
             String userInfo = server.getUserInput(clientSocket);
-            String[] info = userInfo.split(",");
             boolean ans = model.Login(userInfo);
-            if (ans) {
+            while(true){
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                out.println("success");
+                if (ans) {
+                    out.println("success");
+                    break;
+                }
+                else{
+                    out.println("fail");
+                }
             }
             while(true){
+
                 String bet;
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -49,6 +52,7 @@ public class Server {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
             }
 
 

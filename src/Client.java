@@ -7,18 +7,6 @@ public class Client {
         Socket socket;
         View view = new View();
         Controller controller = new Controller(view);
-        String ans;
-        try{
-            ans = controller.reader.readLine();
-            //System.out.println(ans);
-        }catch (IOException e){
-            throw new RuntimeException(e);
-        }
-        if(ans.equals("success")){
-            controller.initializeGame();
-        }
-
-
 
     }
 }
