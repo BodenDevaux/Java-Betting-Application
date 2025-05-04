@@ -7,6 +7,5 @@ public class Client {
         Socket socket;
         View view = new View();
         Controller controller = new Controller(view);
-
     }
 }

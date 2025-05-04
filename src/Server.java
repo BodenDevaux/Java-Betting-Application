@@ -5,12 +5,12 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.*;
-import java.util.Random;
+import java.util.List;
 
 public class Server {
     private Connection connection;
-    private static Model model = new Model();
-    private static Game game = new Game();
+    private static authenticateModel authenticatemodel = new authenticateModel();
+    //private static Game game = new Game(); //moved game to after login
 
     public Server() {
         try {
@@ -25,15 +25,14 @@ public class Server {
         Server server = new Server();
         ServerSocket serverSocket = new ServerSocket(5000);
         System.out.println("server started waiting for clients...");
-
         while (true) {
             Socket clientSocket = serverSocket.accept();
             System.out.println("client connected: " + clientSocket.getPort());
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String userInfo = server.getUserInput(clientSocket);
-            boolean ans = model.Login(userInfo);
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            String userInfo = reader.readLine();
+            boolean ans = authenticatemodel.Login(userInfo);
             while(true){
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 if (ans) {
                     out.println("success");
                     break;
@@ -42,31 +41,36 @@ public class Server {
                     out.println("fail");
                 }
             }
+            Player player = authenticatemodel.getPlayer();
+            Game game = new Game(player);
             while(true){
 
                 String bet;
                 try {
-
                     bet = reader.readLine();
-                    String []info = bet.split(",");
+                    String[] info = bet.split(",");
                     String result;
-                    if(info[0].equals("dice")){
+                    if (info[0].equals("dice")) {
                         result = game.diceBet(bet);
-                        server.sendUserResult(clientSocket,result);
-                    }else if(info[0].equals("coin")){
+                        //server.sendUserResult(clientSocket,result);
+                    } else if (info[0].equals("coin")) {
                         result = game.coinBet(bet);
-                        server.sendUserResult(clientSocket,result);
+                        //server.sendUserResult(clientSocket,result);}
+                    }else if(info[0].equals("leaderboard")){
+                        List<String> leaderboardList = game.getLeaderBoard();
+                        result = String.join(",", leaderboardList);
+                        //System.out.println(result);
+                    } else {
+                        result = "Invalid bet type.";
                     }
+                    out.println(result);
 
                 } catch (IOException e) {
+                    System.out.println("Connection lost with client: " + clientSocket.getPort());
                     throw new RuntimeException(e);
                 }
-
             }
-
-
         }
-
     }
 
     public String getUserInput(Socket clientSocket) {

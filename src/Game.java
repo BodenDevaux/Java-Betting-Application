@@ -1,8 +1,24 @@
+import java.util.List;
 import java.util.Random;
 
 public class Game {
-    public int score = 100;
-    private Model model = new Model();
+    public int score;
+    private gameModel gamemodel;
+
+    public Game(Player player){
+        //System.out.println("Hello");
+        this.gamemodel = new gameModel(player);
+        int current = gamemodel.getScore();
+        if(current == -1){
+            score = 100;
+            gamemodel.createScore(score);
+            gamemodel.updateScore(score);
+        }else{
+            score = current;
+        }
+    }
+
+
     
     public String coinBet(String bet) {
         String[] vals = bet.split(",");
@@ -23,16 +39,16 @@ public class Game {
         if (guess.equals(flipResult)) {
             //player win
             score += Integer.parseInt(vals[2]);
-            model.createScore(score);
-            model.updateScore(score);
+            gamemodel.createScore(score);
+            gamemodel.updateScore(score);
             scoreText = String.valueOf(score);
             playerResult = "win";
         } else {
             //player loss
 
             score -= Integer.parseInt(vals[2]);
-            model.createScore(score);
-            model.updateScore(score);
+            gamemodel.createScore(score);
+            gamemodel.updateScore(score);
             scoreText = String.valueOf(score);
             playerResult = "loss";
         }
@@ -62,16 +78,26 @@ public class Game {
 
         if(playerGuess.equals(dieResult)){
             //win
-            score += betAmount;
+            score += betAmount * 6;
+            gamemodel.createScore(score);
+            gamemodel.updateScore(score);
             scoreText = String.valueOf(score);
             playerResult = "win";
         }else{
             //loss
             score -= betAmount;
+            gamemodel.createScore(score);
+            gamemodel.updateScore(score);
             scoreText = String.valueOf(score);
             playerResult = "loss";
         }
         System.out.println("in dice game");
         return playerResult + "," + dieResult + "," + scoreText;
+    }
+    public int getScore(){
+        return score;
+    }
+    public List<String> getLeaderBoard(){
+        return gamemodel.getLeaderBoard();
     }
 }

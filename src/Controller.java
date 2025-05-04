@@ -28,6 +28,7 @@ public class Controller {
         view.betButtonActionListen((new ActionListenerBetButton()));
         view.coinGameButtonActionListener(new ActionListenerCoinGameButton());
         view.diceGameButtonActionListener(new ActionListenerDiceGameButton());
+        view.leaderboardButtionActionListener(new ActionListenerLeaderboardButton());
         view.initializeLoginScreen();
     }
 
@@ -77,6 +78,7 @@ public class Controller {
             String response = serverRecieve();
             if(response.equals("success")){
                 view.initializeGameScreen();
+                //view.setScore();
             }else{
                 System.out.println("it browken");
             }
@@ -143,6 +145,14 @@ public class Controller {
         public void actionPerformed(ActionEvent e) {
             view.showCoinGame();
             gameType ="coin";
+        }
+    }
+    private class ActionListenerLeaderboardButton implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            serverSend("leaderboard");
+            String leaderboard = serverRecieve();
+            view.showLeaderboard(leaderboard);
         }
     }
 }

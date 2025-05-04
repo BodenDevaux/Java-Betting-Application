@@ -13,7 +13,7 @@ public class GameScreen {
     private JRadioButton headsButton;
     private JRadioButton tailsButton;
     private ButtonGroup coinGuessGroup;
-    private ButtonGroup diceGuesGroup;
+    private ButtonGroup diceGuessGroup;
     private ButtonGroup gameSelectionGroup;
 
     private JRadioButton buttonOne;
@@ -29,7 +29,7 @@ public class GameScreen {
 
     private JRadioButton diceGameButton;
     private JRadioButton coinGameButton;
-
+    private JRadioButton leaderboardButton;
 
     public GameScreen(){
         gameScreen = new JFrame();
@@ -37,11 +37,16 @@ public class GameScreen {
         result = new JTextArea();
         playscore = new JTextArea();
 
-        diceGameButton = new JRadioButton();
-        coinGameButton = new JRadioButton();
+        diceGameButton = new JRadioButton("Dice");
+        coinGameButton = new JRadioButton("Coin Flip");
+        leaderboardButton = new JRadioButton("Leaderboard");
+
         gameSelectionGroup = new ButtonGroup();
         gameSelectionGroup.add(diceGameButton);
         gameSelectionGroup.add(coinGameButton);
+        gameSelectionGroup.add(leaderboardButton);
+
+
 
         headsButton = new JRadioButton("Heads");
         tailsButton = new JRadioButton("Tails");
@@ -51,19 +56,19 @@ public class GameScreen {
         coinGuessGroup.add(tailsButton);
 
 
-        diceGuesGroup = new ButtonGroup();
+        diceGuessGroup = new ButtonGroup();
         buttonOne = new JRadioButton("1");
         buttonTwo = new JRadioButton("2");
         buttonThree = new JRadioButton("3");
         buttonFour = new JRadioButton("4");
         buttonFive = new JRadioButton("5");
         buttonSix = new JRadioButton("6");
-        diceGuesGroup.add(buttonOne);
-        diceGuesGroup.add(buttonTwo);
-        diceGuesGroup.add(buttonThree);
-        diceGuesGroup.add(buttonFour);
-        diceGuesGroup.add(buttonFive);
-        diceGuesGroup.add(buttonSix);
+        diceGuessGroup.add(buttonOne);
+        diceGuessGroup.add(buttonTwo);
+        diceGuessGroup.add(buttonThree);
+        diceGuessGroup.add(buttonFour);
+        diceGuessGroup.add(buttonFive);
+        diceGuessGroup.add(buttonSix);
 
         betButton = new JButton("place bet");
     }
@@ -79,6 +84,7 @@ public class GameScreen {
         gameSelectionPanel.add(new JLabel("choose game type"));
         gameSelectionPanel.add(diceGameButton);
         gameSelectionPanel.add(coinGameButton);
+        gameSelectionPanel.add(leaderboardButton);
         gameSelectionPanel.setVisible(true);
 
         //add radio
@@ -98,13 +104,16 @@ public class GameScreen {
         dicePanel.add(buttonFour);
         dicePanel.add(buttonFive);
         dicePanel.add(buttonSix);
+        dicePanel.setVisible(false);
 
         gameScreen.add(gameSelectionPanel);
         gameScreen.add(dicePanel);
         gameScreen.add(coinPanel);
         gameScreen.add(betButton);
+
         gameScreen.setVisible(true);
     }
+
 
     public void betButtonActionListener(ActionListener actionListener){
         betButton.addActionListener(actionListener);
@@ -112,6 +121,10 @@ public class GameScreen {
 
     public void diceGameButtonActionListener(ActionListener actionListener){diceGameButton.addActionListener(actionListener);}
     public void coinGameButtonActionListener(ActionListener actionListener){coinGameButton.addActionListener(actionListener);}
+    public void leaderboardButtonActionListener(ActionListener actionListener) {
+        leaderboardButton.addActionListener(actionListener);
+    }
+
 
     public String getUserCoinBet(){
         String guess = "";
@@ -161,6 +174,16 @@ public class GameScreen {
     }
     public void setScore(String score){
         playscore.setText("Score: " + score);
+    }
+    public void displayLeaderboard(String leaderboard) {
+        coinPanel.setVisible(false);
+        dicePanel.setVisible(false);
+        String[] leaders = leaderboard.split(",");
+        String board = "";
+        for(String entry: leaders){
+            board += entry.trim() + "\n";
+        }
+        result.setText(board);
     }
 
 }

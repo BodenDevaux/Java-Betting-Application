@@ -76,8 +76,10 @@ public class View {
         gameScreen.setScore(score);
     }
 
+
     public void diceGameButtonActionListener(ActionListener actionListener){gameScreen.diceGameButtonActionListener(actionListener);}
     public void coinGameButtonActionListener(ActionListener actionListener){gameScreen.coinGameButtonActionListener(actionListener);}
+    public void leaderboardButtionActionListener(ActionListener actionListener){gameScreen.leaderboardButtonActionListener(actionListener);}
 
     public void showCoinGame(){
         gameScreen.displayCoinGame();
@@ -85,5 +87,8 @@ public class View {
 
     public void showDiceGame(){
         gameScreen.displayDiceGame();
+    }
+    public void showLeaderboard(String leaderboard){
+        gameScreen.displayLeaderboard(leaderboard);
     }
 }
