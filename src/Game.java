@@ -19,7 +19,7 @@ public class Game {
     }
 
 
-    
+
     public String coinBet(String bet) {
         String[] vals = bet.split(",");
 
@@ -32,7 +32,6 @@ public class Game {
         } else {
             flipResult ="tails";
         }
-
         String scoreText;
         String playerResult;
         String guess =vals[1];
@@ -53,7 +52,6 @@ public class Game {
             playerResult = "loss";
         }
 
-        System.out.println("in coin game");
         return playerResult + "," + flipResult + "," + scoreText;
     }
 
@@ -66,7 +64,6 @@ public class Game {
 
         Random random = new Random();
         int randNUM = random.nextInt(6)+1;
-        System.out.println("randnum is: "+ randNUM);
         if(randNUM == 1){dieResult ="1";  }
         else if(randNUM == 2){dieResult ="2";   }
         else if (randNUM ==3){dieResult ="3"; }
@@ -91,7 +88,7 @@ public class Game {
             scoreText = String.valueOf(score);
             playerResult = "loss";
         }
-        System.out.println("in dice game");
+
         return playerResult + "," + dieResult + "," + scoreText;
     }
     public int getScore(){

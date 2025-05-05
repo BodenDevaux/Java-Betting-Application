@@ -29,6 +29,7 @@ public class Controller {
         view.coinGameButtonActionListener(new ActionListenerCoinGameButton());
         view.diceGameButtonActionListener(new ActionListenerDiceGameButton());
         view.leaderboardButtionActionListener(new ActionListenerLeaderboardButton());
+        view.createBackButtonActionListener(new ActionListenerCreateBackButton());
         view.initializeLoginScreen();
     }
 
@@ -158,6 +159,15 @@ public class Controller {
             serverSend("leaderboard");
             String leaderboard = serverRecieve();
             view.showLeaderboard(leaderboard);
+        }
+    }
+
+    private class ActionListenerCreateBackButton implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            view.closeCreateAccoutScreen();
+            view.initializeLoginScreen();
         }
     }
 }

@@ -24,6 +24,12 @@ public class View {
     public void createAccountActionListener(ActionListener actionListener){
         createAccountScreen.createAccountButtonActionListener(actionListener);
     }
+    public void createBackButtonActionListener(ActionListener actionListener){createAccountScreen.backButtonActionListener(actionListener);}
+
+    public void closeCreateAccoutScreen(){
+        createAccountScreen.closeCreateScreen();
+    }
+
     public String createUserInformation(){
         return CreateAccountScreen.newUserInfo();
     }

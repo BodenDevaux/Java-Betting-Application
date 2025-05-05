@@ -75,7 +75,7 @@ public class GameScreen {
 
     public void initializeGameScreen(){
         gameScreen.setSize(500,500);
-        gameScreen.setLayout(new GridLayout(7,1,2,2));
+        gameScreen.setLayout(new GridLayout(7,1,10,10));
         gameScreen.add(playscore);
         gameScreen.add(result);
         gameScreen.add(betArea);
@@ -130,12 +130,12 @@ public class GameScreen {
         String guess = "";
         if(headsButton.isSelected()){
             guess = "heads";
-        }else if(tailsButton.isSelected()){
+        }
+        if(tailsButton.isSelected()){
             guess = "tails";
-        }else{
-            return "Please Enter A Valid Guess";
         }
         String betAmount = betArea.getText();
+        System.out.println("gamescreen coin bet :" + guess + ", " + betAmount);
         return guess + "," + betAmount;
     }
 
@@ -143,6 +143,7 @@ public class GameScreen {
         String guess = "";
         if(buttonOne.isSelected()){
             guess = "1";
+            System.out.println("right");
         }else if(buttonTwo.isSelected()){
             guess = "2";
         }else if(buttonThree.isSelected()){
@@ -157,6 +158,7 @@ public class GameScreen {
             return "Please Enter A Valid Guess";
         }
         String betAmount = betArea.getText();
+        System.out.println("gamescreen dice bet :" + guess + ", " + betAmount);
         return guess + "," + betAmount;
     }
 

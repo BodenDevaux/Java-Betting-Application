@@ -11,6 +11,11 @@ public class LoginScreen {
     private JButton loginButton;
     private JButton createAccountPageButton;
 
+    private JPanel usernamePanel;
+    private JPanel passwordPanel;
+    private JLabel usernameLabel;
+    private JLabel passwordLabel;
+
     public LoginScreen(){
         loginScreen = new JFrame();
         passwordField = new JTextField();
@@ -19,14 +24,22 @@ public class LoginScreen {
         passwordField.setPreferredSize(new Dimension(200, 30));
         loginButton = new JButton("Login");
         createAccountPageButton = new JButton("create account");
+        usernamePanel = new JPanel();
+        usernameLabel = new JLabel("Enter Username:");
+        passwordPanel = new JPanel();
+        passwordLabel = new JLabel("Enter Password:");
     }
 
     public void IntailizeLoginScreen(){
         loginScreen.setSize(500,500);
         loginScreen.setVisible(true);
-        loginScreen.setLayout(new GridLayout(2,2,2,2));
-        loginScreen.add(usernameField);
-        loginScreen.add(passwordField);
+        loginScreen.setLayout(new GridLayout(2,2,10,10));
+        usernamePanel.add(usernameLabel);
+        usernamePanel.add(usernameField);
+        passwordPanel.add(passwordLabel);
+        passwordPanel.add(passwordField);
+        loginScreen.add(usernamePanel);
+        loginScreen.add(passwordPanel);
         loginScreen.add(loginButton);
         loginScreen.add(createAccountPageButton);
     }
