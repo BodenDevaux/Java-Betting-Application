@@ -100,7 +100,12 @@ public class Controller {
         @Override
         public void actionPerformed(ActionEvent e) {
             String info = view.createUserInformation();
+            System.out.println(info);
             serverSend(info);
+            String response = serverRecieve();
+            if(response.equals("Created")){
+                view.initializeGameScreen();
+            }
         }
     }
 

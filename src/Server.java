@@ -31,14 +31,28 @@ public class Server {
             BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
             String userInfo = reader.readLine();
-            boolean ans = authenticatemodel.Login(userInfo);
-            while(true){
+            String parts[] = userInfo.split(",");
+            //boolean ans = authenticatemodel.Login(userInfo);
+            boolean ans = false;
+            if (parts[0].equals("create")) {
+                String credentials = parts[1] + "," + parts[2];
+                authenticatemodel.addUser(credentials);
+                ans = authenticatemodel.Login(credentials);
                 if (ans) {
-                    out.println("success");
-                    break;
+                    out.println("Created");
+                } else {
+                    out.println("shouldent happen");
+                    return;
                 }
-                else{
-                    out.println("fail");
+            }else {
+                ans = authenticatemodel.Login(userInfo);
+                while (true) {
+                    if (ans) {
+                        out.println("success");
+                        break;
+                    } else {
+                        out.println("fail");
+                    }
                 }
             }
             Player player = authenticatemodel.getPlayer();

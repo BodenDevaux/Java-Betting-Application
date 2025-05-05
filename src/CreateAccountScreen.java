@@ -33,10 +33,14 @@ public class CreateAccountScreen {
     public static String newUserInfo(){
         String username = usernameField.getText();
         String password = passwordField.getText();
-        return username + "," + password;
+        System.out.println(username + password);
+        return "create," + username + "," + password;
     }
 
     public void createAccountButtonActionListener(ActionListener actionListener){
         createAccountButton.addActionListener(actionListener);
+    }
+    public void closeCreateScreen(){
+        createAccountScreen.dispose();
     }
 }

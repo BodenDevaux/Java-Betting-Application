@@ -55,6 +55,7 @@ public class View {
 
     public void initializeGameScreen(){
         loginScreen.closeLoginScreen();
+        createAccountScreen.closeCreateScreen();
         gameScreen.initializeGameScreen();
     }
 
