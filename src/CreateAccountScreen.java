@@ -1,6 +1,6 @@
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
 public class CreateAccountScreen {
     private JFrame createAccountScreen;
@@ -62,3 +62,4 @@ public class CreateAccountScreen {
         createAccountScreen.dispose();
     }
 }
+    

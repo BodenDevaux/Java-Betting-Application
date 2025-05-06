@@ -130,7 +130,7 @@ public class Controller {
                 System.out.println(results);
                 processResult(results);
             }else{
-                System.out.println("no game type shouldn't happen");
+                view.setGameResult("Please Select A Game Type!");
             }
 
         }

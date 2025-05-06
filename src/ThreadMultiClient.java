@@ -29,6 +29,7 @@ public class ThreadMultiClient implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         String parts[] = userInfo.split(",");
         boolean ans = false;
         if (parts[0].equals("create")) {
@@ -42,13 +43,18 @@ public class ThreadMultiClient implements Runnable {
                 return;
             }
         }else {
-            ans = authenticatemodel.Login(userInfo);
             while (true) {
+                ans = authenticatemodel.Login(userInfo);
                 if (ans) {
                     out.println("success");
                     break;
                 } else {
                     out.println("fail");
+                    try{
+                        userInfo = in.readLine();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ public class Server {
     private Connection connection;
     private static authenticateModel authenticatemodel = new authenticateModel();
 
+
     public Server() {
         try {
             this.connection = DBConnection.getConnection();
@@ -22,6 +23,7 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
+        authenticatemodel.addTable();
         ServerSocket serverSocket = new ServerSocket(5000);
         System.out.println("server started waiting for clients...");
         while (true) {
