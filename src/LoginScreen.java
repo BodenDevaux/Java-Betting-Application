@@ -33,7 +33,7 @@ public class LoginScreen {
     public void IntailizeLoginScreen(){
         loginScreen.setSize(500,500);
         loginScreen.setVisible(true);
-        loginScreen.setLayout(new GridLayout(2,2,10,10));
+        loginScreen.setLayout(new GridLayout(5,1,10,10));
         usernamePanel.add(usernameLabel);
         usernamePanel.add(usernameField);
         passwordPanel.add(passwordLabel);

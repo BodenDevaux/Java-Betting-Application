@@ -15,7 +15,6 @@ public class View {
     }
 
 
-
     //create account screen
     public void initializeCreateScreen(){
         createAccountScreen.intailizeCreateAccountScreen();
@@ -82,7 +81,6 @@ public class View {
     public void setScore(String score){
         gameScreen.setScore(score);
     }
-
 
     public void diceGameButtonActionListener(ActionListener actionListener){gameScreen.diceGameButtonActionListener(actionListener);}
     public void coinGameButtonActionListener(ActionListener actionListener){gameScreen.coinGameButtonActionListener(actionListener);}

@@ -26,16 +26,28 @@ public class GameScreen {
     private JPanel coinPanel;
     private  JPanel dicePanel;
     private JPanel gameSelectionPanel;
+    private JPanel resultPanel;
+    private JLabel resultLabel;
+    private JPanel betPanel;
+    private JLabel betLabel;
+    private JPanel scorePanel;
+    private JLabel scoreLabel;
 
-    private JRadioButton diceGameButton;
-    private JRadioButton coinGameButton;
-    private JRadioButton leaderboardButton;
+    private final JRadioButton diceGameButton;
+    private final JRadioButton coinGameButton;
+    private final JRadioButton leaderboardButton;
 
     public GameScreen(){
         gameScreen = new JFrame();
-        betArea = new JTextField("enter bet here");
+        betArea = new JTextField();
+        betLabel = new JLabel("enter bet");
+        betPanel = new JPanel();
         result = new JTextArea();
+        resultPanel = new JPanel();
+        resultLabel = new JLabel("results");
         playscore = new JTextArea();
+        scoreLabel = new JLabel("score:");
+        scorePanel = new JPanel();
 
         diceGameButton = new JRadioButton("Dice");
         coinGameButton = new JRadioButton("Coin Flip");
@@ -46,15 +58,12 @@ public class GameScreen {
         gameSelectionGroup.add(coinGameButton);
         gameSelectionGroup.add(leaderboardButton);
 
-
-
         headsButton = new JRadioButton("Heads");
         tailsButton = new JRadioButton("Tails");
 
         coinGuessGroup = new ButtonGroup();
         coinGuessGroup.add(headsButton);
         coinGuessGroup.add(tailsButton);
-
 
         diceGuessGroup = new ButtonGroup();
         buttonOne = new JRadioButton("1");
@@ -76,9 +85,20 @@ public class GameScreen {
     public void initializeGameScreen(){
         gameScreen.setSize(500,500);
         gameScreen.setLayout(new GridLayout(7,1,10,10));
-        gameScreen.add(playscore);
-        gameScreen.add(result);
-        gameScreen.add(betArea);
+        scorePanel.add(scoreLabel);
+        scorePanel.add(playscore);
+        gameScreen.add(scorePanel);
+        resultPanel.add(resultLabel);
+        resultPanel.add(result);
+        gameScreen.add(resultPanel);
+        betPanel.add(betLabel);
+        betPanel.add(betArea);
+        gameScreen.add(betPanel);
+        playscore.setEditable(false);
+        result.setEditable(false);
+        betArea.setPreferredSize(new Dimension(100,20));
+        result.setPreferredSize(new Dimension(100,20));
+        playscore.setPreferredSize(new Dimension(100,20));
 
         gameSelectionPanel = new JPanel();
         gameSelectionPanel.add(new JLabel("choose game type"));
@@ -93,8 +113,6 @@ public class GameScreen {
         coinPanel.add(headsButton);
         coinPanel.add(tailsButton);
         coinPanel.setVisible(false);
-
-
 
         dicePanel = new JPanel();
         dicePanel.add(new JLabel("choose 1-6 dice roll"));
