@@ -11,7 +11,7 @@ public class Game {
         int current = gamemodel.getScore();
         if(current == -1){
             score = 100;
-            gamemodel.createScore(score);
+            //gamemodel.createScore(score);
             gamemodel.updateScore(score);
         }else{
             score = current;
@@ -38,7 +38,7 @@ public class Game {
         if (guess.equals(flipResult)) {
             //player win
             score += Integer.parseInt(vals[2]);
-            gamemodel.createScore(score);
+            //gamemodel.createScore();
             gamemodel.updateScore(score);
             scoreText = String.valueOf(score);
             playerResult = "win";
@@ -46,7 +46,7 @@ public class Game {
             //player loss
 
             score -= Integer.parseInt(vals[2]);
-            gamemodel.createScore(score);
+            //gamemodel.createScore(score);
             gamemodel.updateScore(score);
             scoreText = String.valueOf(score);
             playerResult = "loss";
@@ -76,14 +76,14 @@ public class Game {
         if(playerGuess.equals(dieResult)){
             //win
             score += betAmount * 6;
-            gamemodel.createScore(score);
+            //gamemodel.createScore(score);
             gamemodel.updateScore(score);
             scoreText = String.valueOf(score);
             playerResult = "win";
         }else{
             //loss
             score -= betAmount;
-            gamemodel.createScore(score);
+            //gamemodel.createScore(score);
             gamemodel.updateScore(score);
             scoreText = String.valueOf(score);
             playerResult = "loss";

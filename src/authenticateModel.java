@@ -4,8 +4,8 @@ import java.sql.*;
 
 public class authenticateModel {
     private Connection connection;
-    private static String loggedinUser;
-    private static int loggedinID;
+    private String loggedinUser;
+    private int loggedinID;
     private Player player;
     public authenticateModel(){
 
