@@ -15,8 +15,6 @@ public class gameModel {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to initialize database connection", e);
         }
-
-         
     }
 
     public void createScore(int score) {

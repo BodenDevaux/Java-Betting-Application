@@ -33,7 +33,41 @@ public class LoginScreen {
     public void IntailizeLoginScreen(){
         loginScreen.setSize(500,500);
         loginScreen.setVisible(true);
-        loginScreen.setLayout(new GridLayout(5,1,10,10));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(25,10,25,10);
+        loginScreen.setLayout(new GridBagLayout());
+
+        gbc.gridx = 0;
+        gbc.gridy =0;
+        loginScreen.add(usernameLabel,gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy =0;
+        loginScreen.add(usernameField,gbc);
+
+        gbc.gridx = 3;
+        gbc.gridy =0;
+        gbc.weightx = .5;
+        loginScreen.add(passwordLabel,gbc);
+
+        gbc.gridx = 4;
+        gbc.gridy =0;
+        loginScreen.add(passwordField,gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy =1;
+        gbc.weightx = .5;
+        gbc.gridwidth =2;
+        gbc.fill = GridBagConstraints.BOTH;
+        loginScreen.add(loginButton,gbc);
+
+        gbc.gridx = 3;
+        gbc.gridy =1;
+        gbc.gridwidth =2;
+        gbc.fill = GridBagConstraints.BOTH;
+        loginScreen.add(createAccountPageButton,gbc);
+
+        /*
         usernamePanel.add(usernameLabel);
         usernamePanel.add(usernameField);
         passwordPanel.add(passwordLabel);
@@ -42,6 +76,7 @@ public class LoginScreen {
         loginScreen.add(passwordPanel);
         loginScreen.add(loginButton);
         loginScreen.add(createAccountPageButton);
+        */
     }
 
     public void closeLoginScreen(){

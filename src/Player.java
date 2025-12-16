@@ -1,6 +1,6 @@
 public class Player {
-    private String loggedinUser;
-    private int loggedinID;
+    private static String loggedinUser;
+    private static int loggedinID;
 
 
     public Player(String username, int userId) {
@@ -8,11 +8,11 @@ public class Player {
         loggedinID = userId;
     }
 
-    public String getLoggedinUser() {
+    public static String getLoggedinUser() {
         return loggedinUser;
     }
 
-    public int getLoggedinID() {
+    public static int getLoggedinID() {
         return loggedinID;
     }
 }

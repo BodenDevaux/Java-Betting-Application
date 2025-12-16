@@ -81,7 +81,7 @@ public class Controller {
                 view.initializeGameScreen();
                 //view.setScore();
             }else{
-                System.out.println("it browken");
+                System.out.println("it broken");
             }
         }
     }
@@ -130,7 +130,7 @@ public class Controller {
                 System.out.println(results);
                 processResult(results);
             }else{
-                view.setGameResult("Please Select A Game Type!");
+                System.out.println("no game type shouldn't happen");
             }
 
         }

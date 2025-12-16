@@ -7,8 +7,8 @@ import java.util.List;
 
 public class ThreadMultiClient implements Runnable {
     private Socket clientSocket;
-    private BufferedReader in;
-    private PrintWriter out;
+    private final BufferedReader in;
+    private final PrintWriter out;
     private authenticateModel authenticatemodel = new authenticateModel();
 
     public ThreadMultiClient (Socket socket){
@@ -23,41 +23,47 @@ public class ThreadMultiClient implements Runnable {
 
     @Override
     public void run() {
-        String userInfo = null;
-        try {
-            userInfo = in.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        String parts[] = userInfo.split(",");
-        boolean ans = false;
-        if (parts[0].equals("create")) {
-            String credentials = parts[1] + "," + parts[2];
-            authenticatemodel.addUser(credentials);
-            ans = authenticatemodel.Login(credentials);
-            if (ans) {
-                out.println("Created");
-            } else {
-                out.println("shouldent happen");
-                return;
+        while (true) {
+
+            String userInfo = null;
+            try {
+                userInfo = in.readLine();
+                System.out.println("userinfo" + userInfo);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-        }else {
-            while (true) {
-                ans = authenticatemodel.Login(userInfo);
+
+            String[] parts = userInfo.split(",");
+            boolean ans = false;
+
+            if (parts[0].equals("create")) {
+                String credentials = parts[1] + "," + parts[2];
+                authenticatemodel.addUser(credentials);
+                ans = authenticatemodel.Login(credentials);
                 if (ans) {
-                    out.println("success");
-                    break;
+                    out.println("Created");
                 } else {
-                    out.println("fail");
-                    try{
-                        userInfo = in.readLine();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
+                    out.println("should not happen");
+                    return;
+                }
+            }else {
+
+                ans = authenticatemodel.Login(userInfo);
+                while (true) {
+                    if (ans) {
+                        out.println("success");
+                        break;
+                    } else {
+                        out.println("fail");
                     }
                 }
             }
+            break;
         }
+
+
+
         Player player = authenticatemodel.getPlayer();
         Game game = new Game(player);
         while(true){

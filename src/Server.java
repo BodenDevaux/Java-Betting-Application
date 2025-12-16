@@ -7,10 +7,18 @@ import java.net.Socket;
 import java.sql.*;
 import java.util.List;
 
+/*
+* fix multithreading
+* add error printouts for account login and creation
+* fix leader boarder
+* clean up ui
+* when bet is pressed before bet is entered games freezes/ same thing with log in
+* add player list/add to see if player is logged in
+* */
+
 public class Server {
     private Connection connection;
     private static authenticateModel authenticatemodel = new authenticateModel();
-
 
     public Server() {
         try {
@@ -23,7 +31,6 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
-        authenticatemodel.addTable();
         ServerSocket serverSocket = new ServerSocket(5000);
         System.out.println("server started waiting for clients...");
         while (true) {
